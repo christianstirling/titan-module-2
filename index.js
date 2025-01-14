@@ -1782,6 +1782,11 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
 
 };
 
+let maleMean;
+let maleStdDev;
+let femaleMean;
+let femaleStdDev;
+
 const tasks = createTasks(input);
 
 
@@ -1900,16 +1905,13 @@ function percentFatigued(taskInputs, gender) {
                 let populationStrength = 0;
                 populationStrength = mean + (pValue[i] * stdDev);
 
-                const initialValue = 1;
-                const modifierProduct = Object.values(taskInputs[j].TaskModifiers)
-                    .reduce((accumulator, currentValue) => accumulator * currentValue, initialValue);
 
                 let taskDuration = taskInputs[j].ForceDuration * taskInputs[j].ForceCount;
                 totalTaskDuration = totalTaskDuration + taskDuration;
 
-                let forceMagnitude = taskInputs[j].ForceMagnitude * testModifier;
+                let forceMagnitude = taskInputs[j].ForceMagnitude;
 
-                let taskRecovery = (taskDuration) / (1 - (forceMagnitude / (populationStrength * modifierProduct))) ** (1 / 0.24) - (taskDuration);
+                let taskRecovery = (taskDuration) / (1 - (forceMagnitude / (populationStrength))) ** (1 / 0.24) - (taskDuration);
 
                 totalTaskRecovery = totalTaskRecovery + taskRecovery;
             }
@@ -1969,7 +1971,7 @@ function percentContribution(taskInputs, percent, gender2) {
         // Note, "percent - 1" index used below. If used "percent", calculation would be 1 index off due to first slot in array being 0
         populationStrength_MC = mean_MC + (pValue[percent - 1] * stdDev_MC);
 
-        
+
 
         /*  Changed the following section to remove the modifier variables.
 
