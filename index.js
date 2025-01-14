@@ -38,144 +38,1451 @@ const pValue = [
     -2.33, -2.05, -1.88, -1.75, -1.64, -1.55, -1.48, -1.41, -1.34, -1.28, -1.23, -1.18, -1.13, -1.08, -1.04, -0.99, -0.95, -0.92, -0.88, -0.84, -0.81, -0.77, -0.74, -0.71, -0.67, -0.64, -0.61, -0.58, -0.55, -0.52, -0.50, -0.47, -0.44, -0.41, -0.39, -0.36, -0.33, -0.31, -0.28, -0.25, -0.23, -0.20, -0.18, -0.15, -0.13, -0.10, -0.08, -0.05, -0.03, 0, 0.03, 0.05, 0.08, 0.10, 0.13, 0.15, 0.18, 0.20, 0.23, 0.25, 0.28, 0.31, 0.33, 0.36, 0.39, 0.41, 0.44, 0.47, 0.50, 0.52, 0.55, 0.58, 0.61, 0.64, 0.67, 0.71, 0.74, 0.77, 0.81, 0.84, 0.88, 0.92, 0.95, 0.99, 1.04, 1.08, 1.13, 1.18, 1.23, 1.28, 1.34, 1.41, 1.48, 1.55, 1.64, 1.75, 1.88, 2.05, 2.33, 3.09
 ];
 
-// ARRAY of Force Type Population Strength Values
-const forceTypeData = [
-    {
-        ForceName: "1 - Power Grip",
-        StrengthValues: {
-            MaleMean: 101.7,
-            MaleStdDev: 23.1,
-            FemaleMean: 64.9,
-            FemaleStdDev: 13.8
+
+//  Object containing all of the Handle types used in the Twist and Turn module (2).
+
+const handleTypes = {
+    "Key": {
+        "Male": {
+            mean: 36.72,
+            stdDev: 5.75
         },
+        "Female": {
+            mean: 28.76,
+            stdDev: 0.44
+        }
     },
-    {
-        ForceName: "2 - Pinch (Lateral/Key)",
-        StrengthValues: {
-            MaleMean: 21.8,
-            MaleStdDev: 6.2,
-            FemaleMean: 14.4,
-            FemaleStdDev: 3.9
+    "Door Knob": {
+        "Male": {
+            mean: 61.51,
+            stdDev: 21.86
         },
+        "Female": {
+            mean: 46.47,
+            stdDev: 12.75
+        }
     },
-    {
-        ForceName: "3 - Pinch (Thumb vs Index)",
-        StrengthValues: {
-            MaleMean: 14.1,
-            MaleStdDev: 4.3,
-            FemaleMean: 10.2,
-            FemaleStdDev: 3.1
+    "L-Shaped": {
+        "Right": {
+            "Counter-clockwise": {
+                "Male": {
+                    mean: 154,
+                    stdDev: 46.02
+                },
+                "Female": {
+                    mean: 101.64,
+                    stdDev: 30.38
+                }
+            },
+            "Clockwise": {
+                "Male": {
+                    mean: 121.26,
+                    stdDev: 30.09
+                },
+                "Female": {
+                    mean: 80.03,
+                    stdDev: 19.86
+                }
+            }
         },
+        "Left": {
+            "Clockwise": {
+                "Male": {
+                    mean: 154.00,
+                    stdDev: 46.02
+                },
+                "Female": {
+                    mean: 101.64,
+                    stdDev: 30.38
+                }
+            },
+            "Counter-clockwise": {
+                "Male": {
+                    mean: 121.26,
+                    stdDev: 30.09
+                },
+                "Female": {
+                    mean: 80.03,
+                    stdDev: 19.86
+                }
+            }
+        }
     },
-    {
-        ForceName: "4 - Pinch (Thumb vs First Two)",
-        StrengthValues: {
-            MaleMean: 21.4,
-            MaleStdDev: 6.4,
-            FemaleMean: 14.4,
-            FemaleStdDev: 4.5
+    "Ridged Knob": {
+        "Male": {
+            mean: 37.79,
+            stdDev: 8.67
         },
+        "Female": {
+            mean: 25.40,
+            stdDev: 5.66
+        }
     },
-    {
-        ForceName: "5 - Thumb Press",
-        StrengthValues: {
-            MaleMean: 18.3,
-            MaleStdDev: 6.0,
-            FemaleMean: 14.4,
-            FemaleStdDev: 7.3
+    "Tap": {
+        "Male": {
+            mean: 73.20,
+            stdDev: 19.91
         },
+        "Female": {
+            mean: 53.37,
+            stdDev: 13.28
+        }
     },
-    {
-        ForceName: "6 - Finger Press (Index)",
-        StrengthValues: {
-            MaleMean: 11.8,
-            MaleStdDev: 4.0,
-            FemaleMean: 8.8,
-            FemaleStdDev: 3.3
+    "Wing Nut": {
+        "Male": {
+            mean: 34.96,
+            stdDev: 9.74
         },
+        "Female": {
+            mean: 23.90,
+            stdDev: 5.13
+        }
     },
-    {
-        ForceName: "7 - Finger Press (Middle)",
-        StrengthValues: {
-            MaleMean: 14.1,
-            MaleStdDev: 4.4,
-            FemaleMean: 9.4,
-            FemaleStdDev: 2.9
+    "Jar Lid": {
+        "Knurled": {
+            "1.8 inch diameter": {
+                "Male": {
+                    mean: 39.83,
+                    stdDev: 11.33
+                },
+                "Female": {
+                    mean: 31.95,
+                    stdDev: 10.18
+                }
+            },
+            "2.6 inch diameter": {
+                "Male": {
+                    mean: 58.68,
+                    stdDev: 13.28
+                },
+                "Female": {
+                    mean: 42.13,
+                    stdDev: 12.39
+                }
+            },
+            "3.3 inch diameter": {
+                "Male": {
+                    mean: 74.61,
+                    stdDev: 15.84
+                },
+                "Female": {
+                    mean: 52.48,
+                    stdDev: 13.45
+                }
+            }
         },
+        "Smooth": {
+            "1.8 inch diameter": {
+                "Male": {
+                    mean: 32.66,
+                    stdDev: 10.09
+                },
+                "Female": {
+                    mean: 28.59,
+                    stdDev: 10.09
+                }
+            },
+            "2.6 inch diameter": {
+                "Male": {
+                    mean: 50.01,
+                    stdDev: 10.80
+                },
+                "Female": {
+                    mean: 38.85,
+                    stdDev: 12.39
+                }
+            },
+            "3.3 inch diameter": {
+                "Male": {
+                    mean: 67.27,
+                    stdDev: 15.22
+                },
+                "Female": {
+                    mean: 51.51,
+                    stdDev: 16.73
+                }
+            }
+        }
     },
-    {
-        ForceName: "8 - Finger Press (Multiple)",
-        StrengthValues: {
-            MaleMean: 44.4,
-            MaleStdDev: 9.6,
-            FemaleMean: 32.5,
-            FemaleStdDev: 6.4
+    "Round Knob": {
+        "Knurled": {
+            "0.125 inch diameter": {
+                "Male": {
+                    mean: 0.57,
+                    stdDev: 0.19
+                },
+                "Female": {
+                    mean: 0.38,
+                    stdDev: 0.13
+                }
+            },
+            "0.25 inch diameter": {
+                "Male": {
+                    mean: 1.22,
+                    stdDev: 0.34
+                },
+                "Female": {
+                    mean: 0.81,
+                    stdDev: 0.22
+                }
+            },
+            "0.5 inch diameter": {
+                "Male": {
+                    mean: 1.99,
+                    stdDev: 0.84
+                },
+                "Female": {
+                    mean: 1.33,
+                    stdDev: 0.56
+                }
+            },
+            "0.75 inch diameter": {
+                "Male": {
+                    mean: 5.81,
+                    stdDev: 1.98
+                },
+                "Female": {
+                    mean: 3.88,
+                    stdDev: 1.32
+                }
+            },
+            "1.0 inch diameter": {
+                "Male": {
+                    mean: 7.25,
+                    stdDev: 2.22
+                },
+                "Female": {
+                    mean: 4.82,
+                    stdDev: 1.48
+                }
+            },
+            "1.5 inch diameter": {
+                "Male": {
+                    mean: 9.17,
+                    stdDev: 2.35
+                },
+                "Female": {
+                    mean: 6.11,
+                    stdDev: 1.56
+                }
+            },
+            "2.0 inch diameter": {
+                "Male": {
+                    mean: 13.13,
+                    stdDev: 3.05
+                },
+                "Female": {
+                    mean: 8.74,
+                    stdDev: 2.04
+                }
+            },
+            "3.0 inch diameter": {
+                "Male": {
+                    mean: 29.85,
+                    stdDev: 8.53
+                },
+                "Female": {
+                    mean: 19.88,
+                    stdDev: 5.68
+                }
+            },
+            "4.0 inch diameter": {
+                "Male": {
+                    mean: 43.62,
+                    stdDev: 10.87
+                },
+                "Female": {
+                    mean: 29.05,
+                    stdDev: 7.24
+                }
+            },
+            "5.0 inch diameter": {
+                "Male": {
+                    mean: 60.82,
+                    stdDev: 16.42
+                },
+                "Female": {
+                    mean: 40.51,
+                    stdDev: 10.93
+                }
+            }
         },
+        "Smooth": {
+            "0.125 inch diameter": {
+                "Male": {
+                    mean: 0.19,
+                    stdDev: 0.10
+                },
+                "Female": {
+                    mean: 0.12,
+                    stdDev: 0.06
+                }
+            },
+            "0.25 inch diameter": {
+                "Male": {
+                    mean: 0.52,
+                    stdDev: 0.20
+                },
+                "Female": {
+                    mean: 0.35,
+                    stdDev: 0.13
+                }
+            },
+            "0.5 inch diameter": {
+                "Male": {
+                    mean: 1.36,
+                    stdDev: 0.48
+                },
+                "Female": {
+                    mean: 0.90,
+                    stdDev: 0.32
+                }
+            },
+            "0.75 inch diameter": {
+                "Male": {
+                    mean: 2.49,
+                    stdDev: 0.66
+                },
+                "Female": {
+                    mean: 1.66,
+                    stdDev: 0.44
+                }
+            },
+            "1.0 inch diameter": {
+                "Male": {
+                    mean: 3.69,
+                    stdDev: 1.33
+                },
+                "Female": {
+                    mean: 2.46,
+                    stdDev: 0.89
+                }
+            },
+            "1.5 inch diameter": {
+                "Male": {
+                    mean: 6.09,
+                    stdDev: 1.65
+                },
+                "Female": {
+                    mean: 4.05,
+                    stdDev: 1.10
+                }
+            },
+            "2.0 inch diameter": {
+                "Male": {
+                    mean: 9.25,
+                    stdDev: 2.92
+                },
+                "Female": {
+                    mean: 6.16,
+                    stdDev: 1.95
+                }
+            },
+            "3.0 inch diameter": {
+                "Male": {
+                    mean: 16.69,
+                    stdDev: 5.07
+                },
+                "Female": {
+                    mean: 11.12,
+                    stdDev: 3.38
+                }
+            },
+            "4.0 inch diameter": {
+                "Male": {
+                    mean: 28.38,
+                    stdDev: 8.45
+                },
+                "Female": {
+                    mean: 18.91,
+                    stdDev: 5.63
+                }
+            },
+            "5.0 inch diameter": {
+                "Male": {
+                    mean: 44.77,
+                    stdDev: 14.11
+                },
+                "Female": {
+                    mean: 29.82,
+                    stdDev: 9.40
+                }
+            }
+        }
     },
-    {
-        ForceName: "9 - Poke (Thumb)",
-        StrengthValues: {
-            MaleMean: 10.5,
-            MaleStdDev: 6.6,
-            FemaleMean: 7.3,
-            FemaleStdDev: 3.5
+    "Regular Screwdriver": {
+        "Right": {
+            "Counter-clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 18.19,
+                        stdDev: 5.64
+                    },
+                    "Female": {
+                        mean: 12.00,
+                        stdDev: 3.72
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 35.03,
+                        stdDev: 6.46
+                    },
+                    "Female": {
+                        mean: 23.12,
+                        stdDev: 4.26
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 44.26,
+                        stdDev: 9.14
+                    },
+                    "Female": {
+                        mean: 29.21,
+                        stdDev: 6.03
+                    }
+                }
+            },
+            "Clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 46.19,
+                        stdDev: 13.08
+                    },
+                    "Female": {
+                        mean: 30.49,
+                        stdDev: 8.63
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 44.94,
+                        stdDev: 9.53
+                    },
+                    "Female": {
+                        mean: 29.66,
+                        stdDev: 6.29
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 36.52,
+                        stdDev: 12.15
+                    },
+                    "Female": {
+                        mean: 24.10,
+                        stdDev: 8.02
+                    }
+                }
+            }
         },
+        "Left": {
+            "Clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 18.19,
+                        stdDev: 5.64
+                    },
+                    "Female": {
+                        mean: 12.00,
+                        stdDev: 3.72
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 35.03,
+                        stdDev: 6.46
+                    },
+                    "Female": {
+                        mean: 23.12,
+                        stdDev: 4.26
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 44.26,
+                        stdDev: 9.14
+                    },
+                    "Female": {
+                        mean: 29.21,
+                        stdDev: 6.03
+                    }
+                }
+            },
+            "Counter-clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 46.19,
+                        stdDev: 13.08
+                    },
+                    "Female": {
+                        mean: 30.49,
+                        stdDev: 8.63
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 44.94,
+                        stdDev: 9.53
+                    },
+                    "Female": {
+                        mean: 29.66,
+                        stdDev: 6.29
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 36.52,
+                        stdDev: 12.15
+                    },
+                    "Female": {
+                        mean: 24.10,
+                        stdDev: 8.02
+                    }
+                }
+            }
+        }
     },
-    {
-        ForceName: "10 - Poke (Index)",
-        StrengthValues: {
-            MaleMean: 10.1,
-            MaleStdDev: 6.7,
-            FemaleMean: 5.7,
-            FemaleStdDev: 2.2
+    "Pistol Grip Screwdriver": {
+        "Right": {
+            "Counter-clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 31.42,
+                        stdDev: 17.36
+                    },
+                    "Female": {
+                        mean: 18.22,
+                        stdDev: 10.07
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 68.51,
+                        stdDev: 21.61
+                    },
+                    "Female": {
+                        mean: 39.74,
+                        stdDev: 12.54
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 103.64,
+                        stdDev: 24.84
+                    },
+                    "Female": {
+                        mean: 60.11,
+                        stdDev: 14.40
+                    }
+                }
+            },
+            "Clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 105.37,
+                        stdDev: 26.76
+                    },
+                    "Female": {
+                        mean: 55.85,
+                        stdDev: 14.19
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 87.84,
+                        stdDev: 19.10
+                    },
+                    "Female": {
+                        mean: 46.56,
+                        stdDev: 10.12
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 52.90,
+                        stdDev: 19.48
+                    },
+                    "Female": {
+                        mean: 28.04,
+                        stdDev: 10.32
+                    }
+                }
+            }
         },
+        "Left": {
+            "Clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 31.42,
+                        stdDev: 17.36
+                    },
+                    "Female": {
+                        mean: 18.22,
+                        stdDev: 10.07
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 68.51,
+                        stdDev: 21.61
+                    },
+                    "Female": {
+                        mean: 39.74,
+                        stdDev: 12.54
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 103.64,
+                        stdDev: 24.84
+                    },
+                    "Female": {
+                        mean: 60.11,
+                        stdDev: 14.40
+                    }
+                }
+            },
+            "Counter-clockwise": {
+                "Palm-down (60 degrees Pronated)": {
+                    "Male": {
+                        mean: 105.37,
+                        stdDev: 26.76
+                    },
+                    "Female": {
+                        mean: 55.85,
+                        stdDev: 14.19
+                    }
+                },
+                "Hand-shake (Neutral)": {
+                    "Male": {
+                        mean: 87.84,
+                        stdDev: 19.10
+                    },
+                    "Female": {
+                        mean: 46.56,
+                        stdDev: 10.12
+                    }
+                },
+                "Palm-up (60 degrees Supinated)": {
+                    "Male": {
+                        mean: 52.90,
+                        stdDev: 19.48
+                    },
+                    "Female": {
+                        mean: 28.04,
+                        stdDev: 10.32
+                    }
+                }
+            }
+        }
     },
-    {
-        ForceName: "11 - Poke (Middle)",
-        StrengthValues: {
-            MaleMean: 9.3,
-            MaleStdDev: 4.9,
-            FemaleMean: 4.8,
-            FemaleStdDev: 1.5
+    "T-Handle": {
+        "Right": {
+            "Elbow Angle 180 degrees": {
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 113.29,
+                            stdDev: 40.71
+                        },
+                        "Female": {
+                            mean: 65.71,
+                            stdDev: 23.61
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 30.09
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 17.45
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 25.67
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 14.89
+                        }
+                    }
+                },
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 128.34,
+                            stdDev: 44.25
+                        },
+                        "Female": {
+                            mean: 68.02,
+                            stdDev: 23.45
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 102.67,
+                            stdDev: 41.60
+                        },
+                        "Female": {
+                            mean: 54.41,
+                            stdDev: 22.05
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 99.13,
+                            stdDev: 60.19
+                        },
+                        "Female": {
+                            mean: 52.54,
+                            stdDev: 31.90
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 135 degrees": {
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 107.09,
+                            stdDev: 44.25
+                        },
+                        "Female": {
+                            mean: 62.11,
+                            stdDev: 25.67
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 119.49,
+                            stdDev: 26.55
+                        },
+                        "Female": {
+                            mean: 69.30,
+                            stdDev: 15.40
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 117.71,
+                            stdDev: 29.21
+                        },
+                        "Female": {
+                            mean: 68.27,
+                            stdDev: 16.94
+                        }
+                    }
+                },
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 139.84,
+                            stdDev: 56.64
+                        },
+                        "Female": {
+                            mean: 74.12,
+                            stdDev: 30.02
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 126.57,
+                            stdDev: 49.56
+                        },
+                        "Female": {
+                            mean: 67.08,
+                            stdDev: 26.27
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 115.06,
+                            stdDev: 64.61
+                        },
+                        "Female": {
+                            mean: 60.98,
+                            stdDev: 34.24
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 90 degrees": {
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 97.36,
+                            stdDev: 50.45
+                        },
+                        "Female": {
+                            mean: 56.47,
+                            stdDev: 29.26
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 113.29,
+                            stdDev: 39.83
+                        },
+                        "Female": {
+                            mean: 65.71,
+                            stdDev: 23.10
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 115.94,
+                            stdDev: 35.40
+                        },
+                        "Female": {
+                            mean: 67.25,
+                            stdDev: 20.53
+                        }
+                    }
+                },
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 137.19,
+                            stdDev: 53.99
+                        },
+                        "Female": {
+                            mean: 72.71,
+                            stdDev: 28.61
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 138.96,
+                            stdDev: 55.76
+                        },
+                        "Female": {
+                            mean: 73.65,
+                            stdDev: 29.55
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 117.71,
+                            stdDev: 69.92
+                        },
+                        "Female": {
+                            mean: 62.39,
+                            stdDev: 37.06
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 45 degrees": {
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 79.66,
+                            stdDev: 42.48
+                        },
+                        "Female": {
+                            mean: 46.20,
+                            stdDev: 24.64
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 104.44,
+                            stdDev: 33.63
+                        },
+                        "Female": {
+                            mean: 60.57,
+                            stdDev: 19.51
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 23.90
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 13.86
+                        }
+                    }
+                },
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 143.38,
+                            stdDev: 51.33
+                        },
+                        "Female": {
+                            mean: 75.99,
+                            stdDev: 27.21
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 122.14,
+                            stdDev: 41.60
+                        },
+                        "Female": {
+                            mean: 64.73,
+                            stdDev: 22.05
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 96.47,
+                            stdDev: 52.22
+                        },
+                        "Female": {
+                            mean: 51.13,
+                            stdDev: 27.68
+                        }
+                    }
+                }
+            }
         },
+        "Left": {
+            "Elbow Angle 180 degrees": {
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 113.29,
+                            stdDev: 40.71
+                        },
+                        "Female": {
+                            mean: 65.71,
+                            stdDev: 23.61
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 30.09
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 17.45
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 25.67
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 14.89
+                        }
+                    }
+                },
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 128.34,
+                            stdDev: 44.25
+                        },
+                        "Female": {
+                            mean: 68.02,
+                            stdDev: 23.45
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 102.67,
+                            stdDev: 41.60
+                        },
+                        "Female": {
+                            mean: 54.41,
+                            stdDev: 22.05
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 99.13,
+                            stdDev: 60.19
+                        },
+                        "Female": {
+                            mean: 52.54,
+                            stdDev: 31.90
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 135 degrees": {
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 107.09,
+                            stdDev: 44.25
+                        },
+                        "Female": {
+                            mean: 62.11,
+                            stdDev: 25.67
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 119.49,
+                            stdDev: 26.55
+                        },
+                        "Female": {
+                            mean: 69.30,
+                            stdDev: 15.40
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 117.71,
+                            stdDev: 29.21
+                        },
+                        "Female": {
+                            mean: 68.27,
+                            stdDev: 16.94
+                        }
+                    }
+                },
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 139.84,
+                            stdDev: 56.64
+                        },
+                        "Female": {
+                            mean: 74.12,
+                            stdDev: 30.02
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 126.57,
+                            stdDev: 49.56
+                        },
+                        "Female": {
+                            mean: 67.08,
+                            stdDev: 26.27
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 115.06,
+                            stdDev: 64.61
+                        },
+                        "Female": {
+                            mean: 60.98,
+                            stdDev: 34.24
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 90 degrees": {
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 97.36,
+                            stdDev: 50.45
+                        },
+                        "Female": {
+                            mean: 56.47,
+                            stdDev: 29.26
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 113.29,
+                            stdDev: 39.83
+                        },
+                        "Female": {
+                            mean: 65.71,
+                            stdDev: 23.10
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 115.94,
+                            stdDev: 35.40
+                        },
+                        "Female": {
+                            mean: 67.25,
+                            stdDev: 20.53
+                        }
+                    }
+                },
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 137.19,
+                            stdDev: 53.99
+                        },
+                        "Female": {
+                            mean: 72.71,
+                            stdDev: 28.61
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 138.96,
+                            stdDev: 55.76
+                        },
+                        "Female": {
+                            mean: 73.65,
+                            stdDev: 29.55
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 117.71,
+                            stdDev: 69.92
+                        },
+                        "Female": {
+                            mean: 62.39,
+                            stdDev: 37.06
+                        }
+                    }
+                }
+            },
+            "Elbow Angle 45 degrees": {
+                "Clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 79.66,
+                            stdDev: 42.48
+                        },
+                        "Female": {
+                            mean: 46.20,
+                            stdDev: 24.64
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 104.44,
+                            stdDev: 33.63
+                        },
+                        "Female": {
+                            mean: 60.57,
+                            stdDev: 19.51
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 103.55,
+                            stdDev: 23.90
+                        },
+                        "Female": {
+                            mean: 60.06,
+                            stdDev: 13.68
+                        }
+                    }
+                },
+                "Counter-clockwise": {
+                    "Palm-down (75% Range of Motion)": {
+                        "Male": {
+                            mean: 143.38,
+                            stdDev: 51.33
+                        },
+                        "Female": {
+                            mean: 75.99,
+                            stdDev: 27.21
+                        }
+                    },
+                    "Hand-shake (Neutral)": {
+                        "Male": {
+                            mean: 122.14,
+                            stdDev: 41.60
+                        },
+                        "Female": {
+                            mean: 64.73,
+                            stdDev: 22.05
+                        }
+                    },
+                    "Palm-up (75% Range of Motion)": {
+                        "Male": {
+                            mean: 96.47,
+                            stdDev: 52.22
+                        },
+                        "Female": {
+                            mean: 51.13,
+                            stdDev: 27.68
+                        }
+                    }
+                }
+            }
+        }
     },
-    {
-        ForceName: "12 - Finger Pull (Index)",
-        StrengthValues: {
-            MaleMean: 37.0,
-            MaleStdDev: 9.5,
-            FemaleMean: 24.7,
-            FemaleStdDev: 6.3
+    "Cylindrical Handle": {
+        "Right": {
+            "Smooth": {
+                "Outward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 55.76,
+                            stdDev: 20.36
+                        },
+                        "Female": {
+                            mean: 20.36,
+                            stdDev: 13.28
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 46.91,
+                            stdDev: 11.51
+                        },
+                        "Female": {
+                            mean: 19.47,
+                            stdDev: 13.28
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 43.37,
+                            stdDev: 18.59
+                        },
+                        "Female": {
+                            mean: 21.24,
+                            stdDev: 12.39
+                        }
+                    }
+                },
+                "Inward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 61.96,
+                            stdDev: 23.90
+                        },
+                        "Female": {
+                            mean: 25.67,
+                            stdDev: 22.13
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 63.73,
+                            stdDev: 15.05
+                        },
+                        "Female": {
+                            mean: 26.67,
+                            stdDev: 22.13
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 53.10,
+                            stdDev: 16.82
+                        },
+                        "Female": {
+                            mean: 20.36,
+                            stdDev: 17.70
+                        }
+                    }
+                }
+            },
+            "Knurled": {
+                "Outward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 63.73,
+                            stdDev: 23.01
+                        },
+                        "Female": {
+                            mean: 23.01,
+                            stdDev: 15.05
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 53.99,
+                            stdDev: 13.28
+                        },
+                        "Female": {
+                            mean: 22.13,
+                            stdDev: 15.05
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 49.56,
+                            stdDev: 21.24
+                        },
+                        "Female": {
+                            mean: 24.78,
+                            stdDev: 14.16
+                        }
+                    }
+                },
+                "Inward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 71.69,
+                            stdDev: 27.44
+                        },
+                        "Female": {
+                            mean: 29.21,
+                            stdDev: 25.67
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 73.46,
+                            stdDev: 17.70
+                        },
+                        "Female": {
+                            mean: 29.21,
+                            stdDev: 25.67
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 61.07,
+                            stdDev: 19.47
+                        },
+                        "Female": {
+                            mean: 23.01,
+                            stdDev: 20.36
+                        }
+                    }
+                }
+            }
         },
-    },
-    {
-        ForceName: "13 - Finger Pull (First 2)",
-        StrengthValues: {
-            MaleMean: 66.3,
-            MaleStdDev: 19.1,
-            FemaleMean: 44.2,
-            FemaleStdDev: 12.7
-        },
-    },
-    {
-        ForceName: "14 - Finger Pull (First 3)",
-        StrengthValues: {
-            MaleMean: 84.5,
-            MaleStdDev: 20.9,
-            FemaleMean: 56.3,
-            FemaleStdDev: 13.9
-        },
-    },
-    {
-        ForceName: "15 - Finger Pull (Four)",
-        StrengthValues: {
-            MaleMean: 90.6,
-            MaleStdDev: 26.1,
-            FemaleMean: 60.4,
-            FemaleStdDev: 17.4
-        },
-    },
-];
+        "Left": {
+            "Smooth": {
+                "Outward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 55.76,
+                            stdDev: 20.36
+                        },
+                        "Female": {
+                            mean: 20.36,
+                            stdDev: 13.28
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 46.91,
+                            stdDev: 11.51
+                        },
+                        "Female": {
+                            mean: 19.47,
+                            stdDev: 13.28
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 43.37,
+                            stdDev: 18.59
+                        },
+                        "Female": {
+                            mean: 21.24,
+                            stdDev: 12.39
+                        }
+                    }
+                },
+                "Inward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 61.96,
+                            stdDev: 23.90
+                        },
+                        "Female": {
+                            mean: 25.67,
+                            stdDev: 22.13
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 63.73,
+                            stdDev: 15.05
+                        },
+                        "Female": {
+                            mean: 25.67,
+                            stdDev: 22.13
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 53.10,
+                            stdDev: 16.82
+                        },
+                        "Female": {
+                            mean: 20.36,
+                            stdDev: 17.70
+                        }
+                    }
+                }
+            },
+            "Knurled": {
+                "Outward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 63.73,
+                            stdDev: 23.01
+                        },
+                        "Female": {
+                            mean: 23.01,
+                            stdDev: 15.05
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 53.99,
+                            stdDev: 13.28
+                        },
+                        "Female": {
+                            mean: 22.13,
+                            stdDev: 15.05
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 49.56,
+                            stdDev: 21.24
+                        },
+                        "Female": {
+                            mean: 24.78,
+                            stdDev: 14.16
+                        }
+                    }
+                },
+                "Inward": {
+                    "1.8 inch diameter": {
+                        "Male": {
+                            mean: 71.69,
+                            stdDev: 27.44
+                        },
+                        "Female": {
+                            mean: 29.21,
+                            stdDev: 25.67
+                        }
+                    },
+                    "2.3 inch diameter": {
+                        "Male": {
+                            mean: 73.46,
+                            stdDev: 17.70
+                        },
+                        "Female": {
+                            mean: 29.21,
+                            stdDev: 25.67
+                        }
+                    },
+                    "3.3 inch diameter": {
+                        "Male": {
+                            mean: 61.07,
+                            stdDev: 19.47
+                        },
+                        "Female": {
+                            mean: 23.01,
+                            stdDev: 20.36
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -218,471 +1525,264 @@ function screenNotEnoughTimeInCycle(taskInputs, hand_s) {
 // screenNotEnoughTimeInCycle(tasks_LH, "Left");
 // screenNotEnoughTimeInCycle(tasks_RH, "Right");
 
+/*  
+    'input' array - simulation of the user's input as it would be entered into the app.
+*/
 
 
 const input = [
     {
-        Task: 1,
-        TaskName: "Seat Connector",
-        Hand: "Right",
-        ForceType: "2 - Pinch (Lateral/Key)",
-        TaskModifiers: {
-            WristPosture: "Extension",
-            GripSpan: "2.75",
-        },
-        ForceCount: 2,
-        ForceMagnitude: 3.0,
-        ForceDuration: 1.0
+        // This is the template for a force type that does not have any "attributes"
+        name: "Task 1.1",
+        handleType: "Key",
+        modifiers: [],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
     },
     {
-        Task: 2,
-        TaskName: "Insert Wire Transfer Mod into A-Box",
-        Hand: "Right",
-        ForceType: "7 - Finger Press (Middle)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 3.1,
-        ForceDuration: 0.5
+        name: "Task 1.2",
+        handleType: "Door Knob",
+        modifiers: [],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
     {
-        Task: 3,
-        TaskName: "Mount Crown Holder",
-        Hand: "Right",
-        ForceType: "4 - Pinch (Thumb vs First Two)",
-        TaskModifiers: {
-            WristPosture: "Ulnar",
-            GripSpan: "3.5",
-            Glove: "Nitrile or Vinyl Exam"
-        },
-        ForceCount: 3,
-        ForceMagnitude: 2.0,
-        ForceDuration: 1.25
+        name: "Task 1.3",
+        handleType: "Ridged Knob",
+        modifiers: [],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
     },
     {
-        Task: 4,
-        TaskName: "Pull Housing Module Connectors",
-        Hand: "Both",
-        ForceType: "12 - Finger Pull (Index)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 6.0,
-        ForceDuration: 2.0
+        name: "Task 1.4",
+        handleType: "Tap",
+        modifiers: [],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
     {
-        Task: 5,
-        TaskName: "Bend Module Door",
-        Hand: "Left",
-        ForceType: "15 - Finger Pull (Four)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 15.4,
-        ForceDuration: 2.0
+        name: "Task 1.5",
+        handleType: "Wing Nut",
+        modifiers: [],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
     {
-        Task: 6,
-        TaskName: "Insert J-Plug Connector",
-        Hand: "Both",
-        ForceType: "8 - Finger Press (Multiple)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 7.5,
-        ForceDuration: 1.2
+        name: "Task 2",
+        handleType: "L-Shaped",
+        modifiers: ["Counter-clockwise"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
     },
     {
-        Task: 7,
-        TaskName: "Adjust Off-side Connector",
-        Hand: "Left",
-        ForceType: "2 - Pinch (Lateral/Key)",
-        TaskModifiers: {
-            WristPosture: "Ulnar",
-            GripSpan: "1.75",
-        },
-        ForceCount: 1,
-        ForceMagnitude: 3.6,
-        ForceDuration: 1.25
+        name: "Task 3",
+        handleType: "Jar Lid",
+        modifiers: ["Knurled", "1.8 inch diameter"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
     {
-        Task: 8,
-        TaskName: "Open Ramp Module Door",
-        Hand: "Left",
-        ForceType: "13 - Finger Pull (First 2)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 5.0,
-        ForceDuration: 1.5
+        name: "Task 4",
+        handleType: "Round Knob",
+        modifiers: ["Smooth", "0.75 inch diameter"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
     {
-        Task: 9,
-        TaskName: "Hitch Seat Support Crossbar",
-        Hand: "Left",
-        ForceType: "8 - Finger Press (Multiple)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 2,
-        ForceMagnitude: 6.0,
-        ForceDuration: 1.5
+        name: "Task 5.1",
+        handleType: "Regular Screwdriver",
+        modifiers: ["Clockwise", "Hand-shake (Neutral)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
     },
     {
-        Task: 10,
-        TaskName: "Press Controller Switch",
-        Hand: "Right",
-        ForceType: "6 - Finger Press (Index)",
-        TaskModifiers: {
-            None: 1.0,
-        },
-        ForceCount: 1,
-        ForceMagnitude: 2.0,
-        ForceDuration: 0.55
+        name: "Task 5.2",
+        handleType: "Pistol Grip Screwdriver",
+        modifiers: ["Counter-clockwise", "Palm-up (60 degrees Supinated)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Left"
     },
+    {
+        name: "Task 6",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 90 degrees", "Clockwise", "Palm-down (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
+    },
+    {
+        name: "Task 7",
+        handleType: "Cylindrical Handle",
+        modifiers: ["Smooth", "Outward", "2.3 inch diameter"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
+    }
 ];
 
+/*
+    'createTasks' function - takes the input above and turns it into tasks. 
 
-// TRANSFORMER FUNCTION
+    The big difference between the input objects and the tasks objects is that the task objects have the 2 mean
+    and standard deviation values already in them. to accomodate this, we will be changing how the calculator
+    finds the mean and standard deviation values in the later functions.
 
-function transform(input) {
-    let output = [];
-    let wristPostureTemp;
-    let gripSpanTemp;
-    let elbowPostureTemp;
-    let gloveTemp;
+    Also, we removed the Modifiers attribute from the tasks objects since the modifiers are already calculated
+    in the findValues function.
+
+ */
+
+
+function createTasks(input) {
+
+    let outputArray = new Array();
 
     for (let i = 0; i < input.length; i++) {
 
-        wristPostureTemp = 1;
-        gripSpanTemp = 1;
-        elbowPostureTemp = 1;
-        gloveTemp = 1;
+        maleMean = 0;
+        maleStdDev = 0;
+        femaleMean = 0;
+        femaleStdDev = 0;
+        
+        findValues(handleTypes[input[i].handleType], input[i].handleType, input[i].modifiers, input[i].hand)
 
-        if (input[i].ForceType === "1 - Power Grip") {
-            //wrist posture / grip span / elbow posture / glove
-            switch (input[i].TaskModifiers.WristPosture) {
-                case "Neutral":
-                    wristPostureTemp = 1;
-                    break;
-                case "Mild Flexion":
-                    wristPostureTemp = 0.7;
-                    break;
-                case "Severe Flexion":
-                    wristPostureTemp = 0.45;
-                    break;
-                case "Extension":
-                    wristPostureTemp = 0.75;
-                    break;
-                case "Ulnar":
-                    wristPostureTemp = 0.75;
-                    break;
-                case "Radial":
-                    wristPostureTemp = 0.8;
-                    break;
-                default:
-                    wristPostureTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.GripSpan) {
-                case "< 1":
-                    gripSpanTemp = 0.4;
-                    break;
-                case "1.5":
-                    gripSpanTemp = 1;
-                    break;
-                case "2":
-                    gripSpanTemp = 0.95;
-                    break;
-                case "2.5":
-                    gripSpanTemp = 0.7;
-                    break;
-                case "4":
-                    gripSpanTemp = 0.45;
-                    break;
-                default:
-                    gripSpanTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.ElbowPosture) {
-                case "Elbow Bend - 90":
-                    elbowPostureTemp = 0.95;
-                    break;
-                case "Elbow Bend - 135":
-                    elbowPostureTemp = 1;
-                    break;
-                case "Elbow Bend - 180":
-                    elbowPostureTemp = 0.93;
-                    break;
-                default:
-                    elbowPostureTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.Glove) {
-                case "Bare Hand (no glove)":
-                    gloveTemp = 1;
-                    break;
-                case "Nitrile or Vinyl Exam":
-                    gloveTemp = 0.94;
-                    break;
-                case "Leather Work":
-                    gloveTemp = 0.77;
-                    break;
-                case "Rubber":
-                    gloveTemp = 0.75;
-                    break;
-                case "Heavy Heat-Resistant":
-                    gloveTemp = 0.62;
-                    break;
-                case "Anti Vibration":
-                    gloveTemp = 0.72;
-                    break;
-                case "Cotton Knitted":
-                    gloveTemp = 0.89;
-                    break;
-                default:
-                    gloveTemp = 1;
-                    break;
-            }
-
-            output[i] = {
-                Task : input[i].Task,
-                TaskName: input[i].TaskName,
-                Hand: input[i].Hand,
-                ForceType: input[i].ForceType,
-                TaskModifiers: {
-                    WristPosture: wristPostureTemp,
-                    GripSpan: gripSpanTemp,
-                    ElbowPosture: elbowPostureTemp,
-                    Glove: gloveTemp
-                },
-                ForceCount: input[i].ForceCount,
-                ForceDuration: input[i].ForceDuration,
-                ForceMagnitude: input[i].ForceMagnitude
-            }
-
-        } else if (input[i].ForceType === "2 - Pinch (Lateral/Key)") {
-            //wrist posture / grip span
-            switch (input[i].TaskModifiers.WristPosture) {
-                case "Neutral":
-                    wristPostureTemp = 1;
-                    break;
-                case "Flexion":
-                    wristPostureTemp = 0.66;
-                    break;
-                case "Extension":
-                    wristPostureTemp = 0.79;
-                    break;
-                case "Ulnar":
-                    wristPostureTemp = 0.81;
-                    break;
-                case "Radial":
-                    wristPostureTemp = 0.87;
-                    break;
-                default:
-                    wristPostureTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.GripSpan) {
-                case "1":
-                    gripSpanTemp = 1; 
-                    break;
-                case "1.75":
-                    gripSpanTemp = 0.95;
-                    break;
-                case "2.75":
-                    gripSpanTemp = 0.71;
-                    break;
-                case "3.5":
-                    gripSpanTemp = 0.56;
-                    break;
-                default:
-                    gripSpanTemp = 1;
-                    break
-            }
-
-            output[i] = {
-                Task : input[i].Task,
-                TaskName: input[i].TaskName,
-                Hand: input[i].Hand,
-                ForceType: input[i].ForceType,
-                TaskModifiers: {
-                    WristPosture: wristPostureTemp,
-                    GripSpan: gripSpanTemp,
-                },
-                ForceCount: input[i].ForceCount,
-                ForceDuration: input[i].ForceDuration,
-                ForceMagnitude: input[i].ForceMagnitude
-            }
-
-
-
-
-        } else if (input[i].ForceType === "3 - Pinch (Thumb vs Index)") {
-            //wrist posture / grip span
-
-            switch (input[i].TaskModifiers.WristPosture) {
-                case "Neutral":
-                    wristPostureTemp = 1;
-                    break;
-                case "Flexion":
-                    wristPostureTemp = 0.6;
-                    break;
-                case "Extension":
-                    wristPostureTemp = 0.71;
-                    break;
-                case "Ulnar":
-                    wristPostureTemp = 0.71;
-                    break;
-                case "Radial":
-                    wristPostureTemp = 0.71;
-                    break;
-                default:
-                    wristPostureTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.GripSpan) {
-                case "0.75":
-                    gripSpanTemp = 0.99;
-                    break;
-                case "1.75":
-                    gripSpanTemp = 1;
-                    break;
-                case "2.75":
-                    gripSpanTemp = 0.95;
-                    break;
-                case "3.5":
-                    gripSpanTemp = 0.86;
-                    break;
-                case "4.5":
-                    gripSpanTemp = 0.61;
-                    break;
-                case "5.5":
-                    gripSpanTemp = 0.49;
-                    break;
-                default:
-                    gripSpanTemp = 1;
-                    break;
-            }
-
-            output[i] = {
-                Task : input[i].Task,
-                TaskName: input[i].TaskName,
-                Hand: input[i].Hand,
-                ForceType: input[i].ForceType,
-                TaskModifiers: {
-                    WristPosture: wristPostureTemp,
-                    GripSpan: gripSpanTemp,
-                },
-                ForceCount: input[i].ForceCount,
-                ForceDuration: input[i].ForceDuration,
-                ForceMagnitude: input[i].ForceMagnitude
-            }
-
-
-        } else if (input[i].ForceType === "4 - Pinch (Thumb vs First Two)") {
-            //wrist posture / grip span / glove
-            switch (input[i].TaskModifiers.WristPosture) {
-                case "Neutral":
-                    wristPostureTemp = 1;
-                    break;
-                case "Flexion":
-                    wristPostureTemp = 0.56;
-                    break;
-                case "Extension":
-                    wristPostureTemp = 0.7;
-                    break;
-                case "Ulnar":
-                    wristPostureTemp = 0.72;
-                    break;
-                case "Radial":
-                    wristPostureTemp = 0.77;
-                    break;
-                default:
-                    wristPostureTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.GripSpan) {
-                case "0.75":
-                    break;
-                    gripSpanTemp = 0.92;
-                    break;
-                case "1.75":
-                    gripSpanTemp = 1;
-                    break;
-                case "2.75":
-                    gripSpanTemp = 0.81;
-                    break;
-                case "3.5":
-                    gripSpanTemp = 0.75;
-                    break;
-                case "4.5":
-                    gripSpanTemp = 0.57;
-                    break;
-                case "5.5":
-                    gripSpanTemp = 0.5;
-                    break;
-                default:
-                    gripSpanTemp = 1;
-                    break;
-            }
-            switch (input[i].TaskModifiers.Glove) {
-                case "Bare Hand (no glove)":
-                    gloveTemp = 1;
-                    break;
-                case "Nitrile or Vinyl Exam":
-                    gloveTemp = 0.98;
-                    break;
-                case "Leather Work":
-                    gloveTemp = 0.92;
-                    break;
-                default:
-                    gloveTemp = 1;
-                    break;
-            }
-
-            output[i] = {
-                Task : input[i].Task,
-                TaskName: input[i].TaskName,
-                Hand: input[i].Hand,
-                ForceType: input[i].ForceType,
-                TaskModifiers: {
-                    WristPosture: wristPostureTemp,
-                    GripSpan: gripSpanTemp,
-                    Glove: gloveTemp
-                },
-                ForceCount: input[i].ForceCount,
-                ForceDuration: input[i].ForceDuration,
-                ForceMagnitude: input[i].ForceMagnitude
-            }
-
-
+        if (maleMean === null || maleStdDev === null || femaleMean === null || femaleStdDev === null) {
+            console.log("Could not calculate one of the mean or standard deviation values for task number " + (i+1) + ".")
+            console.log("Check the modifiers entered for this task and try again.\n")
+        } else if (maleMean === 0 || maleStdDev === 0 || femaleMean === 0 || femaleStdDev === 0) {
+            console.log("The handle type entered for task number " + (i+1) + " is invalid.\n")
         } else {
-            output[i] = {
-                Task : input[i].Task,
-                TaskName: input[i].TaskName,
-                Hand: input[i].Hand,
-                ForceType: input[i].ForceType,
-                TaskModifiers: {
-                    None: 1
-                },
-                ForceCount: input[i].ForceCount,
-                ForceDuration: input[i].ForceDuration,
-                ForceMagnitude: input[i].ForceMagnitude
-            }
-        };
-            
+            outputArray.push(makeOutput(i, input, maleMean, maleStdDev, femaleMean, femaleStdDev))
+        }
+
+    };
+
+    return outputArray;
+};
+
+function findValues(force, handleType, modifiers, hand) {
+
+    switch (handleType) {
+        case 'Key':
+            maleMean = force["Male"].mean
+            maleStdDev = force["Male"].stdDev
+            femaleMean = force["Female"].mean
+            femaleStdDev = force["Female"].stdDev
+            break
+        case 'Door Knob':
+            maleMean = force["Male"].mean
+            maleStdDev = force["Male"].stdDev
+            femaleMean = force["Female"].mean
+            femaleStdDev = force["Female"].stdDev
+            break
+        case 'L-Shaped':
+            maleMean = force[hand][modifiers[0]]["Male"].mean
+            maleStdDev = force[hand][modifiers[0]]["Male"].stdDev
+            femaleMean = force[hand][modifiers[0]]["Female"].mean
+            femaleStdDev = force[hand][modifiers[0]]["Female"].stdDev
+            break
+        case 'Ridged Knob':
+            maleMean = force["Male"].mean
+            maleStdDev = force["Male"].stdDev
+            femaleMean = force["Female"].mean
+            femaleStdDev = force["Female"].stdDev
+            break
+        case 'Tap':
+            maleMean = force["Male"].mean
+            maleStdDev = force["Male"].stdDev
+            femaleMean = force["Female"].mean
+            femaleStdDev = force["Female"].stdDev
+            break
+        case 'Wing Nut':
+            maleMean = force["Male"].mean
+            maleStdDev = force["Male"].stdDev
+            femaleMean = force["Female"].mean
+            femaleStdDev = force["Female"].stdDev
+            break
+        case 'Jar Lid':
+            maleMean = force[modifiers[0]][modifiers[1]]["Male"].mean
+            maleStdDev = force[modifiers[0]][modifiers[1]]["Male"].stdDev
+            femaleMean = force[modifiers[0]][modifiers[1]]["Female"].mean
+            femaleStdDev = force[modifiers[0]][modifiers[1]]["Female"].stdDev
+            break
+        case 'Round Knob':
+            maleMean = force[modifiers[0]][modifiers[1]]["Male"].mean
+            maleStdDev = force[modifiers[0]][modifiers[1]]["Male"].stdDev
+            femaleMean = force[modifiers[0]][modifiers[1]]["Female"].mean
+            femaleStdDev = force[modifiers[0]][modifiers[1]]["Female"].stdDev
+            break
+        case 'Regular Screwdriver':
+            maleMean = force[hand][modifiers[0]][modifiers[1]]["Male"].mean
+            maleStdDev = force[hand][modifiers[0]][modifiers[1]]["Male"].stdDev
+            femaleMean = force[hand][modifiers[0]][modifiers[1]]["Female"].mean
+            femaleStdDev = force[hand][modifiers[0]][modifiers[1]]["Female"].stdDev
+            break
+        case 'Pistol Grip Screwdriver':
+            maleMean = force[hand][modifiers[0]][modifiers[1]]["Male"].mean
+            maleStdDev = force[hand][modifiers[0]][modifiers[1]]["Male"].stdDev
+            femaleMean = force[hand][modifiers[0]][modifiers[1]]["Female"].mean
+            femaleStdDev = force[hand][modifiers[0]][modifiers[1]]["Female"].stdDev
+            break
+        case 'T-Handle':
+            maleMean = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Male"].mean
+            maleStdDev = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Male"].stdDev
+            femaleMean = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Female"].mean
+            femaleStdDev = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Female"].stdDev
+            break
+        case 'Cylindrical Handle':
+            maleMean = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Male"].mean
+            maleStdDev = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Male"].stdDev
+            femaleMean = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Female"].mean
+            femaleStdDev = force[hand][modifiers[0]][modifiers[1]][modifiers[2]]["Female"].stdDev
+            break
+        default:
     }
+};
+
+function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev) {
+
+    let output = new Object();
+
+    output.Task = (index + 1);
+    output.TaskName = input[index].name;
+    output.Hand = input[index].hand;
+    output.ForceType = input[index].handleType;
+    output.ForceMagnitude = input[index].forceMagnitude;
+    output.ForceCount = input[index].forceCount;
+    output.ForceDuration = input[index].forceDuration;
+
+    output.MaleMean = maleMean;
+    output.MaleStdDev = maleStdDev;
+    output.FemaleMean = femaleMean;
+    output.FemaleStdDev = femaleStdDev;
 
     return output;
-}
 
-const tasks = transform(input);
+};
+
+const tasks = createTasks(input);
 
 
 
@@ -706,14 +1806,25 @@ function setPValueFloor(tasks_d, gender_d) {
         let stdDev = 0;
         let tempFloor = 0;
 
+        /*  Changed the following If-Else statement. 
+            Previously it pulled the mean and standard dev values from the force type array.
+            Now, it can look in the tasks_d parameter sent to this function and pull the values straight from
+            named attributes there.
+        */
+
         if (gender_d === "Male") {
-            mean = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.MaleMean;
-            stdDev = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.MaleStdDev;
+            mean = tasks_d[j].MaleMean;
+            stdDev = tasks_d[j].MaleStdDev;
         }
         else {
-            mean = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.FemaleMean;
-            stdDev = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.FemaleStdDev;
+            mean = tasks_d[j].FemaleMean;
+            stdDev = tasks_d[j].FemaleStdDev;
         }
+
+        /*  End of changes.
+        */
+
+
         for (let i = 0; i < pValue.length; i++) {
             let populationStrength = 0;
             populationStrength = mean + (pValue[i] * stdDev);
@@ -764,14 +1875,27 @@ function percentFatigued(taskInputs, gender) {
                 let mean = 0;
                 let stdDev = 0;
 
+
+
+                /*  Changed the following If-Else statement. 
+                    Previously it pulled the mean and standard dev values from the force type array.
+                    Now, it can look in the taskInputs parameter sent to this function and pull the values straight from
+                    named attributes there.
+                */
+
                 if (gender === "Male") {
-                    mean = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.MaleMean;
-                    stdDev = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.MaleStdDev;
+                    mean = taskInputs[j].MaleMean;
+                    stdDev = taskInputs[j].MaleStdDev;
                 }
                 else {
-                    mean = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.FemaleMean;
-                    stdDev = forceTypeData.filter(x => x.ForceName === forceTypeCalc)[0].StrengthValues.FemaleStdDev;
+                    mean = taskInputs[j].FemaleMean;
+                    stdDev = taskInputs[j].FemaleStdDev;
                 }
+
+                /*  End of changes.
+                */  
+
+
 
                 let populationStrength = 0;
                 populationStrength = mean + (pValue[i] * stdDev);
@@ -823,26 +1947,50 @@ function percentContribution(taskInputs, percent, gender2) {
 
         let forceType_MC = taskInputs[k].ForceType;
 
+        /*  Changed the following If-Else statement. 
+            Previously it pulled the mean and standard dev values from the force type array.
+            Now, it can look in the taskInputs parameter sent to this function and pull the values straight from
+            named attributes there.
+        */
+
         if (gender2 === "Male") {
-            mean_MC = forceTypeData.filter(x => x.ForceName === forceType_MC)[0].StrengthValues.MaleMean;
-            stdDev_MC = forceTypeData.filter(x => x.ForceName === forceType_MC)[0].StrengthValues.MaleStdDev;
+            mean_MC = taskInputs[k].MaleMean;
+            stdDev_MC = taskInputs[k].MaleStdDev;
         } else {
-            mean_MC = forceTypeData.filter(x => x.ForceName === forceType_MC)[0].StrengthValues.FemaleMean;
-            stdDev_MC = forceTypeData.filter(x => x.ForceName === forceType_MC)[0].StrengthValues.FemaleStdDev;
+            mean_MC = taskInputs[k].FemaleMean;
+            stdDev_MC = taskInputs[k].FemaleStdDev;
         }
+
+        /*  End of changes.
+        */  
+
 
         let populationStrength_MC = 0;
         // Note, "percent - 1" index used below. If used "percent", calculation would be 1 index off due to first slot in array being 0
         populationStrength_MC = mean_MC + (pValue[percent - 1] * stdDev_MC);
 
-        const initialValue_MC = 1;
-        const modifierProduct_MC = Object.values(taskInputs[k].TaskModifiers)
-            .reduce((accumulator, currentValue) => accumulator * currentValue, initialValue_MC);
+        
+
+        /*  Changed the following section to remove the modifier variables.
+
+            A modifier constant was created here that took all of the modifier values from the tasks
+            array in module 1 (Hand and Finger) and multiplied them together. 
+            Since modifiers are now being calculated and implemented in the very beginning of the code, 
+            then there is no value in this part at all.
+
+            Also removed the use of the modifier variable in the force magnitude equation and the
+            task recovery equation below.
+        */
 
         let taskDuration_MC = taskInputs[k].ForceDuration * taskInputs[k].ForceCount;
-        let forceMagnitude_MC = taskInputs[k].ForceMagnitude * testModifier;
+        let forceMagnitude_MC = taskInputs[k].ForceMagnitude;
 
-        let taskRecovery_MC = (taskDuration_MC) / (1 - (forceMagnitude_MC / (populationStrength_MC * modifierProduct_MC))) ** (1 / 0.24) - (taskDuration_MC);
+        let taskRecovery_MC = (taskDuration_MC) / (1 - (forceMagnitude_MC / (populationStrength_MC))) ** (1 / 0.24) - (taskDuration_MC);
+
+        /*  End of changes.
+        */
+
+
 
         // CONSOLE TO SEE ---- DELETE
         // console.log(`For ${percent} PopStrength, ${taskInputs[k].TaskName}: ${taskRecovery_MC}`);
