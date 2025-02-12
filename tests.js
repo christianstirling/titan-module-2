@@ -431,38 +431,38 @@ input = [
 
 
 
-/*  Test set 8 - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 180 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 180 degrees
 */
 
-/*  Test set 9 - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 135 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 135 degrees
 */
 
-/*  Test set 10 - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 90 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 90 degrees
 */
 
-/*  Test set 11 - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 45 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 45 degrees
 */
 
-/*  Test set 12 - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 180 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 180 degrees
 */
 
-/*  Test set 13 - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 135 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 135 degrees
 */
 
-/*  Test set 14 - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 90 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 90 degrees
 */
 
-/*  Test set 15 - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 45 degrees
+/*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 45 degrees
 */
 
-/*  Test set 16 - Handle type: (12)Cylindrical Handle - Hand: Right - Texture: Smooth
+/*  Test set n - Handle type: (12)Cylindrical Handle - Hand: Right - Texture: Smooth
 */
 
-/*  Test set 17 - Handle type: (12)Cylindrical Handle - Hand: Right - Texture: Knurled
+/*  Test set n - Handle type: (12)Cylindrical Handle - Hand: Right - Texture: Knurled
 */
 
-/*  Test set 18 - Handle type: (12)Cylindrical Handle - Hand: Left - Texture: Smooth
+/*  Test set n - Handle type: (12)Cylindrical Handle - Hand: Left - Texture: Smooth
 */
 
-/*  Test set 19 - Handle type: (12)Cylindrical Handle - Hand: Left - Texture: Knurled
+/*  Test set n - Handle type: (12)Cylindrical Handle - Hand: Left - Texture: Knurled
 */
