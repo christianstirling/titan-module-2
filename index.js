@@ -1532,8 +1532,7 @@ function screenNotEnoughTimeInCycle(taskInputs, hand_s) {
 
 const input = [
     {
-        // This is the template for a force type that does not have any "attributes"
-        name: "Task 1.1",
+        name: "Task 1.1 Key",
         handleType: "Key",
         modifiers: [],
         forceCount: 1,
@@ -1548,7 +1547,7 @@ const input = [
         forceCount: 1,
         forceMagnitude: 1,
         forceDuration: 1,
-        hand: "Left"
+        hand: "Right"
     },
     {
         name: "Task 1.3",
@@ -1566,7 +1565,7 @@ const input = [
         forceCount: 1,
         forceMagnitude: 1,
         forceDuration: 1,
-        hand: "Left"
+        hand: "Right"
     },
     {
         name: "Task 1.5",
@@ -1575,72 +1574,9 @@ const input = [
         forceCount: 1,
         forceMagnitude: 1,
         forceDuration: 1,
-        hand: "Left"
-    },
-    {
-        name: "Task 2",
-        handleType: "L-Shaped",
-        modifiers: ["Counter-clockwise"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 3",
-        handleType: "Jar Lid",
-        modifiers: ["Knurled", "1.8 inch diameter"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Left"
-    },
-    {
-        name: "Task 4",
-        handleType: "Round Knob",
-        modifiers: ["Smooth", "0.75 inch diameter"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Left"
-    },
-    {
-        name: "Task 5.1",
-        handleType: "Regular Screwdriver",
-        modifiers: ["Clockwise", "Hand-shake (Neutral)"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 5.2",
-        handleType: "Pistol Grip Screwdriver",
-        modifiers: ["Counter-clockwise", "Palm-up (60 degrees Supinated)"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Left"
-    },
-    {
-        name: "Task 6",
-        handleType: "T-Handle",
-        modifiers: ["Elbow Angle 90 degrees", "Clockwise", "Palm-down (75% Range of Motion)"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 7",
-        handleType: "Cylindrical Handle",
-        modifiers: ["Smooth", "Outward", "2.3 inch diameter"],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
         hand: "Right"
     }
-];
+]
 
 /*
     'createTasks' function - takes the input above and turns it into tasks. 
@@ -1653,6 +1589,29 @@ const input = [
     in the findValues function.
 
  */
+
+
+    
+
+/*  ** Begin changes
+
+    Created two constants: testPerc and durationMod
+
+    testPerc is the percentage that the female mean is multiplied by when
+    calculating the force magnitude.
+
+    durationMod is the modifier that the force duration (the value in the input object)
+    is multiplied by when calculating the force duration of the task.
+*/
+
+const testPerc = .25
+
+const durationMod = 5
+
+/*  ** End changes (2.13.25 cls)
+*/
+
+
 
 
 function createTasks(input) {
@@ -1769,14 +1728,58 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
     output.TaskName = input[index].name;
     output.Hand = input[index].hand;
     output.ForceType = input[index].handleType;
-    output.ForceMagnitude = input[index].forceMagnitude;
+
+
+
+    //  ** Begin changes
+
+    //  Commented out the following line:
+
+    // output.ForceMagnitude = input[index].forceMagnitude;
+
+
+    //  Added the next line.  Sets the force magnitude to a value of the female mean
+    //  multiplied by a set percentage modifier.
+
+    //  The idea is to be able to make all of the force magnitude values the same
+    //  so that the percent contributions are all equal and easy to check during
+    //  testing.
+
+    output.ForceMagnitude = (testPerc * femaleMean)
+
+    //  ** End changes
+
+
+
+
     output.ForceCount = input[index].forceCount;
-    output.ForceDuration = input[index].forceDuration;
+
+
+
+    //  ** Begin changes
+
+    //  Commented out the following line:
+
+    // output.ForceDuration = input[index].forceDuration;
+
+
+    //  This next line sets the duration as the value passed in from the input,
+    //  which in this case should be 1, multiplied by out duration modifier.
+
+    //  The purpose of this is to allow us to ramp up the duration of each task
+    //  without having to change the force duration values in the input array.
+
+    output.ForceDuration = (input[index].forceDuration * durationMod);
+
+    // ** End changes (2.13.25 cls)
+
+
 
     output.MaleMean = maleMean;
     output.MaleStdDev = maleStdDev;
     output.FemaleMean = femaleMean;
     output.FemaleStdDev = femaleStdDev;
+
 
     return output;
 

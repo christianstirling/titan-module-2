@@ -201,7 +201,7 @@ input = [
 
 input = [
     {
-        name: "Task 1a",
+        name: "Task 1.1",
         handleType: "Key",
         modifiers: [],
         forceCount: 1,
@@ -210,7 +210,7 @@ input = [
         hand: "Right"
     },
     {
-        name: "Task 1b",
+        name: "Task 1.2",
         handleType: "Door Knob",
         modifiers: [],
         forceCount: 1,
@@ -219,7 +219,7 @@ input = [
         hand: "Right"
     },
     {
-        name: "Task 1c",
+        name: "Task 1.3",
         handleType: "Ridged Knob",
         modifiers: [],
         forceCount: 1,
@@ -228,7 +228,7 @@ input = [
         hand: "Right"
     },
     {
-        name: "Task 1d",
+        name: "Task 1.4",
         handleType: "Tap",
         modifiers: [],
         forceCount: 1,
@@ -237,7 +237,7 @@ input = [
         hand: "Right"
     },
     {
-        name: "Task 1e",
+        name: "Task 1.5",
         handleType: "Wing Nut",
         modifiers: [],
         forceCount: 1,
