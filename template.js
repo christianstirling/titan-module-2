@@ -66,3 +66,11 @@ const templateArray = [
         hand: "Right ? Left"
     }
 ]
+
+
+
+
+
+
+
+

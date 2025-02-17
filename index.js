@@ -23,7 +23,7 @@ let percentWorkersFatigued = 0;
 
 let cycleTime = 0;
 
-// TESTING MODIFIER used for testing purposes (i.e., increase force magnitude by 50%, 100%, etc.)
+// TESTING MODIFIER used ONLY for testing purposes (i.e., increase force magnitude by 50%, 100%, etc.)
 let testModifier = 0;
 
 // USER INPUTS
@@ -39,7 +39,7 @@ const pValue = [
 ];
 
 
-//  Object containing all of the Handle types used in the Twist and Turn module (2).
+//  Object containing Male & Female Mean & StdDev values for the different Handle types.
 
 const handleTypes = {
     "Key": {
@@ -49,7 +49,7 @@ const handleTypes = {
         },
         "Female": {
             mean: 28.76,
-            stdDev: 0.44
+            stdDev: 4.43
         }
     },
     "Door Knob": {
@@ -1485,11 +1485,9 @@ const handleTypes = {
 }
 
 
-
 // ******** TESTING FUNCTIONS & DATASETS *****************
 // Add back and make transformer-compatible ????
 // See Calculations 11-5-24 to get this code
-
 
 
 // EDGE CASE 4 - NOT ENOUGH TIME IN CYCLE TO PERFORM TASKS
@@ -1525,14 +1523,11 @@ function screenNotEnoughTimeInCycle(taskInputs, hand_s) {
 // screenNotEnoughTimeInCycle(tasks_LH, "Left");
 // screenNotEnoughTimeInCycle(tasks_RH, "Right");
 
-/*  
-    'input' array - simulation of the user's input as it would be entered into the app.
-*/
 
-
+// input array below contains objects with user input of various task information
 const input = [
     {
-        name: "Task 1.1 Key",
+        name: "Task 1.1",
         handleType: "Key",
         modifiers: [],
         forceCount: 1,
@@ -1578,21 +1573,6 @@ const input = [
     }
 ]
 
-/*
-    'createTasks' function - takes the input above and turns it into tasks. 
-
-    The big difference between the input objects and the tasks objects is that the task objects have the 2 mean
-    and standard deviation values already in them. to accomodate this, we will be changing how the calculator
-    finds the mean and standard deviation values in the later functions.
-
-    Also, we removed the Modifiers attribute from the tasks objects since the modifiers are already calculated
-    in the findValues function.
-
- */
-
-
-    
-
 /*  ** Begin changes
 
     Created two constants: testPerc and durationMod
@@ -1612,34 +1592,14 @@ const durationMod = 5
 */
 
 
+/*
+    'createTasks' function - takes the input above and turns it into task-level calculator inputs. 
 
+    The big difference between the input objects and the tasks objects is that the task objects have the male & female mean
+    and standard deviation values in them. To accomodate this, in Mod 2 - Twist & Turn, we changed how the calculator
+    finds the mean and standard deviation values.
+ */
 
-function createTasks(input) {
-
-    let outputArray = new Array();
-
-    for (let i = 0; i < input.length; i++) {
-
-        maleMean = 0;
-        maleStdDev = 0;
-        femaleMean = 0;
-        femaleStdDev = 0;
-        
-        findValues(handleTypes[input[i].handleType], input[i].handleType, input[i].modifiers, input[i].hand)
-
-        if (maleMean === null || maleStdDev === null || femaleMean === null || femaleStdDev === null) {
-            console.log("Could not calculate one of the mean or standard deviation values for task number " + (i+1) + ".")
-            console.log("Check the modifiers entered for this task and try again.\n")
-        } else if (maleMean === 0 || maleStdDev === 0 || femaleMean === 0 || femaleStdDev === 0) {
-            console.log("The handle type entered for task number " + (i+1) + " is invalid.\n")
-        } else {
-            outputArray.push(makeOutput(i, input, maleMean, maleStdDev, femaleMean, femaleStdDev))
-        }
-
-    };
-
-    return outputArray;
-};
 
 function findValues(force, handleType, modifiers, hand) {
 
@@ -1720,6 +1680,7 @@ function findValues(force, handleType, modifiers, hand) {
     }
 };
 
+
 function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev) {
 
     let output = new Object();
@@ -1728,9 +1689,7 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
     output.TaskName = input[index].name;
     output.Hand = input[index].hand;
     output.ForceType = input[index].handleType;
-
-
-
+    
     //  ** Begin changes
 
     //  Commented out the following line:
@@ -1747,14 +1706,14 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
 
     output.ForceMagnitude = (testPerc * femaleMean)
 
+    console.log(`The FEMALE mean for task ${output.Task} is: ${femaleMean}`)
+    
+    console.log(`The input MAGNITUDE for task ${output.Task} is: ${output.ForceMagnitude}`)
+
     //  ** End changes
 
 
-
-
     output.ForceCount = input[index].forceCount;
-
-
 
     //  ** Begin changes
 
@@ -1771,6 +1730,9 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
 
     output.ForceDuration = (input[index].forceDuration * durationMod);
 
+    console.log(`The input DURATION for task ${output.Task} is: ${output.ForceDuration}`)
+    console.log("---")
+
     // ** End changes (2.13.25 cls)
 
 
@@ -1780,24 +1742,62 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
     output.FemaleMean = femaleMean;
     output.FemaleStdDev = femaleStdDev;
 
-
     return output;
 
 };
+
 
 let maleMean;
 let maleStdDev;
 let femaleMean;
 let femaleStdDev;
 
+
+// createTasks function below converts "input" array into calculator-ready values with Male & Female Mean & StdDev values.
+
+function createTasks(input) {
+
+    let outputArray = new Array();
+
+    console.log("Part 1: Creating the tasks for the job using the user's input")
+    console.log("-------------------------------------------------------------\n")
+
+    for (let i = 0; i < input.length; i++) {
+
+        maleMean = 0;
+        maleStdDev = 0;
+        femaleMean = 0;
+        femaleStdDev = 0;
+
+        findValues(handleTypes[input[i].handleType], input[i].handleType, input[i].modifiers, input[i].hand)
+
+        if (maleMean === null || maleStdDev === null || femaleMean === null || femaleStdDev === null) {
+            console.log("Could not calculate one of the mean or standard deviation values for task number " + (i + 1) + ".")
+            console.log("Check the modifiers entered for this task and try again.\n")
+        } else if (maleMean === 0 || maleStdDev === 0 || femaleMean === 0 || femaleStdDev === 0) {
+            console.log("The handle type entered for task number " + (i + 1) + " is invalid.\n")
+        } else {
+            outputArray.push(makeOutput(i, input, maleMean, maleStdDev, femaleMean, femaleStdDev))
+        }
+
+    };
+
+    return outputArray;
+};
+
+
 const tasks = createTasks(input);
 
 
-
-const tasks_RH = tasks.filter(z => z.Hand === "Right" || z.Hand === "Both");
-const tasks_LH = tasks.filter(z => z.Hand === "Left" || z.Hand === "Both");
+// Note that in Mod 2 - Twist & Turn there is no "Both" choice for hand. A task is either Right or Left Hand.
 
 
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^
+// IMPORTANT:  Code above was to develop an array of objects, containing values needed for remainder of Mod 2 - Twist & Turn calculations. Code below is VERY similar to code used in Mod 1 - Hand & Finger. A few lines of code were removed (those for determining a modifier value, and a simpler means to lookup values using tasks array.)
+
+const tasks_RH = tasks.filter(z => z.Hand === "Right");
+const tasks_LH = tasks.filter(z => z.Hand === "Left");
 
 
 // SET P-VALUE FLOOR (Prevent a negative population strength value)
@@ -1808,17 +1808,11 @@ function setPValueFloor(tasks_d, gender_d) {
 
     for (let j = 0; j < tasks_d.length; j++) {
 
-        let forceTypeCalc = tasks_d[j].ForceType;
+        // let forceTypeCalc = tasks_d[j].ForceType;
         // console.log(forceTypeCalc);
         let mean = 0;
         let stdDev = 0;
         let tempFloor = 0;
-
-        /*  Changed the following If-Else statement. 
-            Previously it pulled the mean and standard dev values from the force type array.
-            Now, it can look in the tasks_d parameter sent to this function and pull the values straight from
-            named attributes there.
-        */
 
         if (gender_d === "Male") {
             mean = tasks_d[j].MaleMean;
@@ -1828,11 +1822,6 @@ function setPValueFloor(tasks_d, gender_d) {
             mean = tasks_d[j].FemaleMean;
             stdDev = tasks_d[j].FemaleStdDev;
         }
-
-        /*  End of changes.
-        */
-
-
         for (let i = 0; i < pValue.length; i++) {
             let populationStrength = 0;
             populationStrength = mean + (pValue[i] * stdDev);
@@ -1850,7 +1839,6 @@ function setPValueFloor(tasks_d, gender_d) {
     // console.log(`pValue Floor is ${floor}`);
     return floor;
 }
-
 
 
 // PERCENT FATIGUED FUNCTION
@@ -1879,17 +1867,9 @@ function percentFatigued(taskInputs, gender) {
             // INNER LOOP (Tasks)
             for (let j = 0; j < taskInputs.length; j++) {
 
-                let forceTypeCalc = taskInputs[j].ForceType;
+                // let forceTypeCalc = taskInputs[j].ForceType;
                 let mean = 0;
                 let stdDev = 0;
-
-
-
-                /*  Changed the following If-Else statement. 
-                    Previously it pulled the mean and standard dev values from the force type array.
-                    Now, it can look in the taskInputs parameter sent to this function and pull the values straight from
-                    named attributes there.
-                */
 
                 if (gender === "Male") {
                     mean = taskInputs[j].MaleMean;
@@ -1900,21 +1880,15 @@ function percentFatigued(taskInputs, gender) {
                     stdDev = taskInputs[j].FemaleStdDev;
                 }
 
-                /*  End of changes.
-                */  
-
-
-
                 let populationStrength = 0;
                 populationStrength = mean + (pValue[i] * stdDev);
-
 
                 let taskDuration = taskInputs[j].ForceDuration * taskInputs[j].ForceCount;
                 totalTaskDuration = totalTaskDuration + taskDuration;
 
-                let forceMagnitude = taskInputs[j].ForceMagnitude;
+                let forceMagnitude = taskInputs[j].ForceMagnitude * testModifier;
 
-                let taskRecovery = (taskDuration) / (1 - (forceMagnitude / (populationStrength))) ** (1 / 0.24) - (taskDuration);
+                let taskRecovery = (taskDuration) / (1 - (forceMagnitude / populationStrength)) ** (1 / 0.24) - (taskDuration);
 
                 totalTaskRecovery = totalTaskRecovery + taskRecovery;
             }
@@ -1931,7 +1905,7 @@ function percentFatigued(taskInputs, gender) {
             }
         }
     }
-}
+};
 
 
 // PERCENT CONTRIBUTION FUNCTION
@@ -1950,14 +1924,6 @@ function percentContribution(taskInputs, percent, gender2) {
 
     for (let k = 0; k < taskInputs.length; k++) {
 
-        let forceType_MC = taskInputs[k].ForceType;
-
-        /*  Changed the following If-Else statement. 
-            Previously it pulled the mean and standard dev values from the force type array.
-            Now, it can look in the taskInputs parameter sent to this function and pull the values straight from
-            named attributes there.
-        */
-
         if (gender2 === "Male") {
             mean_MC = taskInputs[k].MaleMean;
             stdDev_MC = taskInputs[k].MaleStdDev;
@@ -1966,39 +1932,15 @@ function percentContribution(taskInputs, percent, gender2) {
             stdDev_MC = taskInputs[k].FemaleStdDev;
         }
 
-        /*  End of changes.
-        */  
-
-
         let populationStrength_MC = 0;
         // Note, "percent - 1" index used below. If used "percent", calculation would be 1 index off due to first slot in array being 0
         populationStrength_MC = mean_MC + (pValue[percent - 1] * stdDev_MC);
 
-
-
-        /*  Changed the following section to remove the modifier variables.
-
-            A modifier constant was created here that took all of the modifier values from the tasks
-            array in module 1 (Hand and Finger) and multiplied them together. 
-            Since modifiers are now being calculated and implemented in the very beginning of the code, 
-            then there is no value in this part at all.
-
-            Also removed the use of the modifier variable in the force magnitude equation and the
-            task recovery equation below.
-        */
-
         let taskDuration_MC = taskInputs[k].ForceDuration * taskInputs[k].ForceCount;
-        let forceMagnitude_MC = taskInputs[k].ForceMagnitude;
+        let forceMagnitude_MC = taskInputs[k].ForceMagnitude * testModifier;
+        // Note there is no calculation of Modifier here in code for Mod 2 - Twist & Turn. 
 
-        let taskRecovery_MC = (taskDuration_MC) / (1 - (forceMagnitude_MC / (populationStrength_MC))) ** (1 / 0.24) - (taskDuration_MC);
-
-        /*  End of changes.
-        */
-
-
-
-        // CONSOLE TO SEE ---- DELETE
-        // console.log(`For ${percent} PopStrength, ${taskInputs[k].TaskName}: ${taskRecovery_MC}`);
+        let taskRecovery_MC = (taskDuration_MC) / (1 - (forceMagnitude_MC / populationStrength_MC)) ** (1 / 0.24) - (taskDuration_MC);
 
         totalTaskRecovery_MC = totalTaskRecovery_MC + taskRecovery_MC
 
@@ -2025,6 +1967,7 @@ function percentContribution(taskInputs, percent, gender2) {
 
     return storeResults;
 }
+
 
 
 // METRICS CALCULATION FUNCTION
@@ -2088,11 +2031,6 @@ function metricsCalculation(percentFatigued_Female, percentFatigued_Male, hand, 
 metricsCalculation(percentFemalesFatigued_LH, percentMalesFatigued_LH, "Left", tasks_LH);
 console.log(" ");
 metricsCalculation(percentFemalesFatigued_RH, percentMalesFatigued_RH, "Right", tasks_RH);
-
-
-
-
-
 
 
 

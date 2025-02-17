@@ -770,29 +770,134 @@ input = [
 
 
 
-/*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 180 degrees
+/*  Test set 10 - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 180 degrees
 */
+
+input = [
+    {
+        name: "Task 10.1",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees", "Counter-clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
+    },
+    {
+        name: "Task 10.2",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right"
+    }
+]
 
 /*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 135 degrees
 */
 
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
+
 /*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 90 degrees
 */
+
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
 
 /*  Test set n - Handle type: (11)T-Handle - Hand: Right - Elbow posture: 45 degrees
 */
 
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
+
 /*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 180 degrees
 */
+
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
 
 /*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 135 degrees
 */
 
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
+
 /*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 90 degrees
 */
 
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
+
 /*  Test set n - Handle type: (11)T-Handle - Hand: Left - Elbow posture: 45 degrees
 */
+
+input = [
+    {
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees ? Elbow Angle 135 degrees ? Elbow Angle 90 degrees ? Elbow Angle 45 degrees", "Counter-clockwise ? Clockwise", "Palm-down (75% Range of Motion) ? Hand-shake (Neutral) ? Palm-up (75% Range of Motion)"],
+        forceCount: 1,
+        forceMagnitude: 1,
+        forceDuration: 1,
+        hand: "Right ? Left"
+    }
+]
 
 /*  Test set n - Handle type: (12)Cylindrical Handle - Hand: Right - Texture: Smooth
 */
