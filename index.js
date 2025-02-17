@@ -1893,7 +1893,7 @@ function percentFatigued(taskInputs, gender) {
                 totalTaskRecovery = totalTaskRecovery + taskRecovery;
             }
 
-            console.log(`${gender} pValue = ${i}, Solve Value = ${(cycleTime - totalTaskDuration) - totalTaskRecovery}`);
+            console.log(`${gender} pValue = ${i}, Solve Value (recovery time needed - time remaining) = ${(cycleTime - totalTaskDuration) - totalTaskRecovery}`);
 
             if (totalTaskRecovery <= (cycleTime - totalTaskDuration) || i === 99) {
                 // Returns i + 1, for the pValue at which totalTaskRecovery was <= cycleTime - totalTaskDuration. This is the Percent Fatigued metric used in subsequent Metrics display
@@ -1973,6 +1973,10 @@ function percentContribution(taskInputs, percent, gender2) {
 // METRICS CALCULATION FUNCTION
 
 // Establish variables for metricsCalculation Function
+console.log("----------------------------------------------------------")
+console.log("Part 2: Calculating percent fatigued (Trying p values until we get enough recovery time")
+console.log("----------------------------------------------------------")
+
 console.log("LEFT HAND:");
 console.log(" ");
 percentFemalesFatigued_LH = percentFatigued(tasks_LH, "Female");
@@ -1983,7 +1987,11 @@ percentFemalesFatigued_RH = percentFatigued(tasks_RH, "Female");
 percentMalesFatigued_RH = percentFatigued(tasks_RH, "Male");
 
 console.log(`Percent Female workers = ${percentFemaleWorkers} %`);
-console.log(`Percent Male workers = ${percentMaleWorkers} %`);
+console.log(`Percent Male workers = ${percentMaleWorkers} %\n`);
+
+console.log("----------------------------------------------------------")
+console.log("Part 3: Results (metric contribution")
+console.log("----------------------------------------------------------")
 
 // Function itself ...
 function metricsCalculation(percentFatigued_Female, percentFatigued_Male, hand, handTasks) {
