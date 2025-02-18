@@ -29,7 +29,7 @@ let testModifier = 0;
 // USER INPUTS
 percentFemaleWorkers = 70;
 percentMaleWorkers = 30;
-cycleTime = 83;
+cycleTime = 100;
 
 testModifier = 1.0;
 
@@ -1527,50 +1527,52 @@ function screenNotEnoughTimeInCycle(taskInputs, hand_s) {
 // input array below contains objects with user input of various task information
 const input = [
     {
-        name: "Task 1.1",
+        name: "Task 1.1 - Key",
         handleType: "Key",
         modifiers: [],
         forceCount: 1,
         forceMagnitude: 1,
         forceDuration: 1,
         hand: "Right"
-    },
-    {
-        name: "Task 1.2",
-        handleType: "Door Knob",
-        modifiers: [],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 1.3",
-        handleType: "Ridged Knob",
-        modifiers: [],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 1.4",
-        handleType: "Tap",
-        modifiers: [],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
-    },
-    {
-        name: "Task 1.5",
-        handleType: "Wing Nut",
-        modifiers: [],
-        forceCount: 1,
-        forceMagnitude: 1,
-        forceDuration: 1,
-        hand: "Right"
     }
+    // ,
+    // {
+    //     name: "Task 1.2 - Door Knob",
+    //     handleType: "Door Knob",
+    //     modifiers: [],
+    //     forceCount: 1,
+    //     forceMagnitude: 1,
+    //     forceDuration: 1,
+    //     hand: "Right"
+    // }
+    // ,
+    // {
+    //     name: "Task 1.3 - Ridged Knob",
+    //     handleType: "Ridged Knob",
+    //     modifiers: [],
+    //     forceCount: 1,
+    //     forceMagnitude: 1,
+    //     forceDuration: 1,
+    //     hand: "Right"
+    // },
+    // {
+    //     name: "Task 1.4 - Tap",
+    //     handleType: "Tap",
+    //     modifiers: [],
+    //     forceCount: 1,
+    //     forceMagnitude: 1,
+    //     forceDuration: 1,
+    //     hand: "Right"
+    // },
+    // {
+    //     name: "Task 1.5 - Wing Nut",
+    //     handleType: "Wing Nut",
+    //     modifiers: [],
+    //     forceCount: 1,
+    //     forceMagnitude: 1,
+    //     forceDuration: 1,
+    //     hand: "Right"
+    // }
 ]
 
 /*  ** Begin changes
@@ -1586,7 +1588,7 @@ const input = [
 
 const testPerc = .25
 
-const durationMod = 5
+const durationMod = 25
 
 /*  ** End changes (2.13.25 cls)
 */
