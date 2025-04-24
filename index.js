@@ -27,8 +27,8 @@ let cycleTime = 0;
 let testModifier = 0;
 
 // USER INPUTS
-percentFemaleWorkers = 70;
-percentMaleWorkers = 30;
+percentFemaleWorkers = 0;
+percentMaleWorkers = 100;
 cycleTime = 100;
 
 testModifier = 1.0;
@@ -1525,73 +1525,51 @@ function screenNotEnoughTimeInCycle(taskInputs, hand_s) {
 
 
 // input array below contains objects with user input of various task information
+
+
+
+// TESTING *** TESTING *** TESTING *** TESTING *** TESTING *** TESTING *** TESTING ********
+
+
+
+
 const input = [
+
     {
-        name: "Task 1.1 - Key",
-        handleType: "Key",
-        modifiers: [],
+        name: "Task Name",
+        handleType: "T-Handle",
+        modifiers: ["Elbow Angle 180 degrees", "Clockwise", "Palm-down (75% Range of Motion)"],
         forceCount: 1,
-        forceMagnitude: 1,
+        forceMagnitude: 130,
         forceDuration: 1,
         hand: "Right"
     }
-    // ,
-    // {
-    //     name: "Task 1.2 - Door Knob",
-    //     handleType: "Door Knob",
-    //     modifiers: [],
-    //     forceCount: 1,
-    //     forceMagnitude: 1,
-    //     forceDuration: 1,
-    //     hand: "Right"
-    // }
-    // ,
-    // {
-    //     name: "Task 1.3 - Ridged Knob",
-    //     handleType: "Ridged Knob",
-    //     modifiers: [],
-    //     forceCount: 1,
-    //     forceMagnitude: 1,
-    //     forceDuration: 1,
-    //     hand: "Right"
-    // },
-    // {
-    //     name: "Task 1.4 - Tap",
-    //     handleType: "Tap",
-    //     modifiers: [],
-    //     forceCount: 1,
-    //     forceMagnitude: 1,
-    //     forceDuration: 1,
-    //     hand: "Right"
-    // },
-    // {
-    //     name: "Task 1.5 - Wing Nut",
-    //     handleType: "Wing Nut",
-    //     modifiers: [],
-    //     forceCount: 1,
-    //     forceMagnitude: 1,
-    //     forceDuration: 1,
-    //     hand: "Right"
-    // }
-]
+];
 
-/*  ** Begin changes
 
-    Created two constants: testPerc and durationMod
 
-    testPerc is the percentage that the female mean is multiplied by when
-    calculating the force magnitude.
 
-    durationMod is the modifier that the force duration (the value in the input object)
-    is multiplied by when calculating the force duration of the task.
-*/
 
-const testPerc = .25
 
-const durationMod = 25
 
-/*  ** End changes (2.13.25 cls)
-*/
+// TESTING:  EDGE CASE 2 - Force too high
+
+// const input = [
+
+//     {
+//         // This is the template for a force type that does not have any "attributes"
+//         name: "Testing - Edge Case 2, Example",
+//         handleType: "Key",
+//         modifiers: [],
+//         forceCount: 1,
+//         forceMagnitude: 43,
+//         forceDuration: 1,
+//         hand: "Left"
+//     },
+
+// ];
+
+
 
 
 /*
@@ -1691,53 +1669,9 @@ function makeOutput(index, input, maleMean, maleStdDev, femaleMean, femaleStdDev
     output.TaskName = input[index].name;
     output.Hand = input[index].hand;
     output.ForceType = input[index].handleType;
-    
-    //  ** Begin changes
-
-    //  Commented out the following line:
-
-    // output.ForceMagnitude = input[index].forceMagnitude;
-
-
-    //  Added the next line.  Sets the force magnitude to a value of the female mean
-    //  multiplied by a set percentage modifier.
-
-    //  The idea is to be able to make all of the force magnitude values the same
-    //  so that the percent contributions are all equal and easy to check during
-    //  testing.
-
-    output.ForceMagnitude = (testPerc * femaleMean)
-
-    console.log(`The FEMALE mean for task ${output.Task} is: ${femaleMean}`)
-    
-    console.log(`The input MAGNITUDE for task ${output.Task} is: ${output.ForceMagnitude}`)
-
-    //  ** End changes
-
-
+    output.ForceMagnitude = input[index].forceMagnitude;
     output.ForceCount = input[index].forceCount;
-
-    //  ** Begin changes
-
-    //  Commented out the following line:
-
-    // output.ForceDuration = input[index].forceDuration;
-
-
-    //  This next line sets the duration as the value passed in from the input,
-    //  which in this case should be 1, multiplied by out duration modifier.
-
-    //  The purpose of this is to allow us to ramp up the duration of each task
-    //  without having to change the force duration values in the input array.
-
-    output.ForceDuration = (input[index].forceDuration * durationMod);
-
-    console.log(`The input DURATION for task ${output.Task} is: ${output.ForceDuration}`)
-    console.log("---")
-
-    // ** End changes (2.13.25 cls)
-
-
+    output.ForceDuration = input[index].forceDuration;
 
     output.MaleMean = maleMean;
     output.MaleStdDev = maleStdDev;
@@ -1760,9 +1694,6 @@ let femaleStdDev;
 function createTasks(input) {
 
     let outputArray = new Array();
-
-    console.log("Part 1: Creating the tasks for the job using the user's input")
-    console.log("-------------------------------------------------------------\n")
 
     for (let i = 0; i < input.length; i++) {
 
@@ -1838,11 +1769,11 @@ function setPValueFloor(tasks_d, gender_d) {
             floor = tempFloor;
         }
     }
-    // console.log(`pValue Floor is ${floor}`);
+    console.log(`pValue Floor is ${floor}`);
     return floor;
 }
 
-
+    
 // PERCENT FATIGUED FUNCTION
 // Calculates the Percent Fatigued Metric using parameter inputs of RH or LH filtered tasks, and gender (male or female)
 function percentFatigued(taskInputs, gender) {
@@ -1858,7 +1789,6 @@ function percentFatigued(taskInputs, gender) {
 
         let iFloor = 0;
         iFloor = setPValueFloor(taskInputs, gender);
-        // console.log(iFloor);
 
         // OUTER LOOP (pValues)
         for (let i = iFloor; i < pValue.length; i++) {
@@ -1869,7 +1799,6 @@ function percentFatigued(taskInputs, gender) {
             // INNER LOOP (Tasks)
             for (let j = 0; j < taskInputs.length; j++) {
 
-                // let forceTypeCalc = taskInputs[j].ForceType;
                 let mean = 0;
                 let stdDev = 0;
 
@@ -1880,10 +1809,15 @@ function percentFatigued(taskInputs, gender) {
                 else {
                     mean = taskInputs[j].FemaleMean;
                     stdDev = taskInputs[j].FemaleStdDev;
-                }
+                };
 
                 let populationStrength = 0;
                 populationStrength = mean + (pValue[i] * stdDev);
+
+                // NEW CODE: In situation where populationStrength actually = 0. The +0.00001 allows loop to continue, instead of breaking out of the loop prematurely
+                if (populationStrength === 0) {
+                    populationStrength = populationStrength + 0.00001
+                };
 
                 let taskDuration = taskInputs[j].ForceDuration * taskInputs[j].ForceCount;
                 totalTaskDuration = totalTaskDuration + taskDuration;
@@ -1893,11 +1827,21 @@ function percentFatigued(taskInputs, gender) {
                 let taskRecovery = (taskDuration) / (1 - (forceMagnitude / populationStrength)) ** (1 / 0.24) - (taskDuration);
 
                 totalTaskRecovery = totalTaskRecovery + taskRecovery;
+
             }
 
-            console.log(`${gender} pValue = ${i}, Solve Value (recovery time needed - time remaining) = ${(cycleTime - totalTaskDuration) - totalTaskRecovery}`);
 
-            if (totalTaskRecovery <= (cycleTime - totalTaskDuration) || i === 99) {
+            // NEW CODE: introduce solveValue and testKey variables below
+            let solveValue = 0;
+            let testKey = 0;
+            solveValue = (cycleTime - totalTaskDuration) - totalTaskRecovery;
+            testKey = Math.abs(solveValue);
+        
+            console.log(`${gender} pValue = ${i}, Solve Value =${solveValue}`);
+            // console.log(Math.abs(solveValue));
+
+            // NEW CODE:  In line below, added a third conditional, testKey < 0.001. This is prevent increasing pValue by one more unit, unnecessarily, and resulting in a Percent Fatigued value that is one too many
+            if (testKey < 0.001 || totalTaskRecovery <= (cycleTime - totalTaskDuration) || i === 99) {
                 // Returns i + 1, for the pValue at which totalTaskRecovery was <= cycleTime - totalTaskDuration. This is the Percent Fatigued metric used in subsequent Metrics display
                 console.log(" ");
                 console.log(`${gender} Total Task Recovery = ${totalTaskRecovery}\n${gender} Percent Fatigued = ${i + 1} %`);
@@ -1905,6 +1849,22 @@ function percentFatigued(taskInputs, gender) {
                 return i + 1;
                 break;
             }
+
+
+            // OLD CODE - DON'T DELETE UNTIL CERTAIN OF "NEW CODE" ABOVE
+            // let solveValue = 0;
+            // solveValue = (cycleTime - totalTaskDuration) - totalTaskRecovery;
+            // console.log(`${gender} pValue = ${i}, Solve Value =${solveValue}`);
+            // if (totalTaskRecovery <= (cycleTime - totalTaskDuration) || i === 99) {
+            //     // Returns i + 1, for the pValue at which totalTaskRecovery was <= cycleTime - totalTaskDuration. This is the Percent Fatigued metric used in subsequent Metrics display
+            //     console.log(" ");
+            //     console.log(`${gender} Total Task Recovery = ${totalTaskRecovery}\n${gender} Percent Fatigued = ${i + 1} %`);
+            //     console.log(" ");
+            //     return i + 1;
+            //     break;
+            // }
+
+
         }
     }
 };
@@ -1975,10 +1935,6 @@ function percentContribution(taskInputs, percent, gender2) {
 // METRICS CALCULATION FUNCTION
 
 // Establish variables for metricsCalculation Function
-console.log("----------------------------------------------------------")
-console.log("Part 2: Calculating percent fatigued (Trying p values until we get enough recovery time")
-console.log("----------------------------------------------------------")
-
 console.log("LEFT HAND:");
 console.log(" ");
 percentFemalesFatigued_LH = percentFatigued(tasks_LH, "Female");
@@ -1989,11 +1945,7 @@ percentFemalesFatigued_RH = percentFatigued(tasks_RH, "Female");
 percentMalesFatigued_RH = percentFatigued(tasks_RH, "Male");
 
 console.log(`Percent Female workers = ${percentFemaleWorkers} %`);
-console.log(`Percent Male workers = ${percentMaleWorkers} %\n`);
-
-console.log("----------------------------------------------------------")
-console.log("Part 3: Results (metric contribution")
-console.log("----------------------------------------------------------")
+console.log(`Percent Male workers = ${percentMaleWorkers} %`);
 
 // Function itself ...
 function metricsCalculation(percentFatigued_Female, percentFatigued_Male, hand, handTasks) {
@@ -2004,6 +1956,7 @@ function metricsCalculation(percentFatigued_Female, percentFatigued_Male, hand, 
     console.log(`Male Percent Fatigued for ${hand} Hand = ${percentFatigued_Male} %`);
 
     percentWorkersFatigued = (percentFatigued_Female * percentFemaleWorkers / 100) + (percentFatigued_Male * percentMaleWorkers / 100);
+
     console.log(`Percent Workers Fatigued for ${hand} Hand = ${rounder1(percentWorkersFatigued)} %`);
 
     // CASE 1 - There is a feasible Female solution
@@ -2041,6 +1994,8 @@ function metricsCalculation(percentFatigued_Female, percentFatigued_Male, hand, 
 metricsCalculation(percentFemalesFatigued_LH, percentMalesFatigued_LH, "Left", tasks_LH);
 console.log(" ");
 metricsCalculation(percentFemalesFatigued_RH, percentMalesFatigued_RH, "Right", tasks_RH);
+
+
 
 
 
